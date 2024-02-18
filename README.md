@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,64 +7,69 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
         }
-        h1 {
-            text-align: center;
+        #search-box {
+            margin-bottom: 20px;
         }
-        #searchInput {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            font-size: 16px;
+        #result {
+            display: none;
+            margin-top: 20px;
         }
-        #searchResult {
-            list-style-type: none;
-            padding: 0;
-        }
-        .resultItem {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-        .resultItem:hover {
-            background-color: #f4f4f4;
+        li {
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
     <h1>English to Indonesian Dictionary</h1>
-    <input type="text" id="searchInput" placeholder="Search...">
-    <ul id="searchResult"></ul>
+    <input type="text" id="search-box" placeholder="Enter English word...">
+    <div id="result">
+        <h2>Result:</h2>
+        <ul id="word-list"></ul>
+    </div>
 
     <script>
-        // Data kamus
-        var dictionary = {
-            "apple": "apel",
-            "banana": "pisang",
-            "orange": "jeruk",
-            "grape": "anggur",
-            "watermelon": "semangka",
-            // Tambahkan kata-kata lain di sini
+        // Dictionary data
+        const dictionary = {
+            "hello": "halo",
+            "goodbye": "selamat tinggal",
+            "cat": "kucing",
+            // Add more words here
         };
 
-        // Fungsi untuk mencari kata dalam kamus
-        function searchDictionary() {
-            var searchInput = document.getElementById("searchInput").value.toLowerCase();
-            var searchResult = document.getElementById("searchResult");
-            searchResult.innerHTML = "";
+        const searchBox = document.getElementById('search-box');
+        const resultDiv = document.getElementById('result');
+        const wordList = document.getElementById('word-list');
 
-            for (var word in dictionary) {
-                if (word.includes(searchInput)) {
-                    var listItem = document.createElement("li");
-                    listItem.setAttribute("class", "resultItem");
-                    listItem.innerHTML = "<strong>" + word + "</strong> - " + dictionary[word];
-                    searchResult.appendChild(listItem);
+        searchBox.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const result = [];
+
+            if (searchTerm.trim() !== '') {
+                for (const word in dictionary) {
+                    if (word.includes(searchTerm)) {
+                        result.push({ english: word, indonesian: dictionary[word] });
+                    }
                 }
             }
-        }
 
-        // Panggil fungsi pencarian saat input berubah
-        document.getElementById("searchInput").addEventListener("input", searchDictionary);
+            displayResult(result);
+        });
+
+        function displayResult(result) {
+            if (result.length > 0) {
+                resultDiv.style.display = 'block';
+                wordList.innerHTML = '';
+
+                result.forEach(function(item) {
+                    const li = document.createElement('li');
+                    li.textContent = `${item.english} - ${item.indonesian}`;
+                    wordList.appendChild(li);
+                });
+            } else {
+                resultDiv.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
