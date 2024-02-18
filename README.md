@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamus English to Indonesian</title>
+    <title>English to Indonesian Dictionary</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,41 +22,49 @@
             list-style-type: none;
             padding: 0;
         }
-        #searchResult li {
+        .resultItem {
             padding: 10px;
             border-bottom: 1px solid #ccc;
+        }
+        .resultItem:hover {
+            background-color: #f4f4f4;
         }
     </style>
 </head>
 <body>
-    <h1>Kamus English to Indonesian</h1>
-    <input type="text" id="searchInput" onkeyup="searchDictionary()" placeholder="Search...">
+    <h1>English to Indonesian Dictionary</h1>
+    <input type="text" id="searchInput" placeholder="Search...">
     <ul id="searchResult"></ul>
 
     <script>
-        const dictionary = {
-            "hello": "halo",
-            "world": "dunia",
+        // Data kamus
+        var dictionary = {
             "apple": "apel",
             "banana": "pisang",
-            // Tambahkan entri kamus sesuai kebutuhan
+            "orange": "jeruk",
+            "grape": "anggur",
+            "watermelon": "semangka",
+            // Tambahkan kata-kata lain di sini
         };
 
+        // Fungsi untuk mencari kata dalam kamus
         function searchDictionary() {
-            const searchInput = document.getElementById('searchInput').value.toLowerCase();
-            const searchResult = document.getElementById('searchResult');
-            searchResult.innerHTML = '';
+            var searchInput = document.getElementById("searchInput").value.toLowerCase();
+            var searchResult = document.getElementById("searchResult");
+            searchResult.innerHTML = "";
 
-            if (searchInput.length === 0) return;
-
-            for (const [key, value] of Object.entries(dictionary)) {
-                if (key.startsWith(searchInput)) {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `${key} - ${value}`;
+            for (var word in dictionary) {
+                if (word.includes(searchInput)) {
+                    var listItem = document.createElement("li");
+                    listItem.setAttribute("class", "resultItem");
+                    listItem.innerHTML = "<strong>" + word + "</strong> - " + dictionary[word];
                     searchResult.appendChild(listItem);
                 }
             }
         }
+
+        // Panggil fungsi pencarian saat input berubah
+        document.getElementById("searchInput").addEventListener("input", searchDictionary);
     </script>
 </body>
 </html>
